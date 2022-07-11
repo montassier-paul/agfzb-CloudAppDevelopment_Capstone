@@ -3,12 +3,13 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, render, redirect
 from .models import CarDealer, CarModel
-from .restapis import get_dealers_from_cf, get_dealer_reviews_from_cf
+from .restapis import get_dealers_from_cf, get_dealer_reviews_from_cf, post_request
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from datetime import datetime
 import logging
 import json
+import numpy
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -106,6 +107,37 @@ def get_dealer_details(request, dealer_id):
         return HttpResponse(sentiments)
 
 # Create a `add_review` view to submit a review
-# def add_review(request, dealer_id):
-# ...
+def add_review(request, dealer_id):
 
+    if request.user.is_authenticated:
+
+        if request.method == "POST":
+            # print(request.POST)
+            url = "https://c64b0b09.eu-gb.apigw.appdomain.cloud/api/review"
+            review = {}
+            review["time"] = datetime.utcnow().isoformat()
+            review["dealership"] = dealer_id
+            # review["review"] = request.POST["content"]
+            review["review"] = "So great"
+            review["name"] = request.user.username
+            # if request.POST['purchasecheck'] == "on":
+            #     review["purchase"] = True
+            # else:
+            #     review["purchase"] = False
+            review["purchase"] = True
+            # review["purchase_date"]= request.POST["purchasedate"]
+            review["purchase_date"] = datetime.utcnow().isoformat()
+            review["car_make"]= "Jeep"
+            review["car_model"]= "Gladiator"
+            review["car_year"]= 2021
+            review["id"] = numpy.random.randint(1000)
+
+            json_payload = {}
+            json_payload["review"] = review
+            response = post_request(url, json_payload, dealerId=dealer_id)
+            print(response)
+            return redirect('djangoapp:dealer_details', dealer_id=dealer_id)
+        else:
+            return HttpResponse("Invalid Request type: " + request.method)
+    else:
+        return HttpResponse("User not authenticated")

@@ -5,6 +5,9 @@ from requests.auth import HTTPBasicAuth
 from ibm_watson import NaturalLanguageUnderstandingV1
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 from ibm_watson.natural_language_understanding_v1 import Features, SentimentOptions
+import requests
+import json
+
 
 # def get_request(url, api_key = None, **kwargs):
 #     try:
@@ -51,6 +54,20 @@ def get_request(url, **kwargs):
     json_data = json.loads(response.text)
     return json_data
 
+# Create a `post_request` to make HTTP POST requests
+# e.g., response = requests.post(url, params=kwargs, json=payload)
+
+def post_request(url, json_payload, **kwargs):
+    print("POST to {} ".format(url))
+    try:
+        response = requests.post(url, params=kwargs, json=json_payload)
+    except:
+        print("Network exception occurred")
+    status_code = response.status_code
+    print("With status {} ".format(status_code))
+    json_data = json.loads(response.text)
+    print(json_data)
+    return json_data
 
 def get_dealers_from_cf(url, **kwargs):
     results = []
