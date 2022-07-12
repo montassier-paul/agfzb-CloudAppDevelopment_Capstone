@@ -123,8 +123,7 @@ def add_review(request, dealer_id, dealer_name):
         elif request.method == "POST":
             print(request.POST)
             url = "https://c64b0b09.eu-gb.apigw.appdomain.cloud/api/review"
-            # car_id = request.POST["car"]
-            # car = CarModel.objects.get(pk=car_id)
+            
             review = {}
             review["time"] = datetime.utcnow().isoformat()
             review["dealership"] = dealer_id
@@ -134,10 +133,12 @@ def add_review(request, dealer_id, dealer_name):
             if "purchasecheck" in request.POST:
                 if request.POST["purchasecheck"] == 'on':
                     review["purchase"] = True
-            review["purchase_date"]= request.POST["purchasedate"]
-            payload["car_make"] = "Audi"
-            payload["car_model"] = "A3"
-            payload["car_year"] = 2021
+                    review["purchase_date"]= request.POST["purchasedate"]
+                    # car_id = request.POST["car"]
+                    # car = CarModel.objects.get(pk=car_id)
+                    review["car_make"] = "Audi"
+                    review["car_model"] = "A3"
+                    review["car_year"] = 2019
             review["id"] = numpy.random.randint(1000)
 
             json_payload = {}
