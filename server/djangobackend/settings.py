@@ -27,8 +27,9 @@ DEBUG = True
 
 APPEND_SLASH = True
 
-ALLOWED_HOSTS = ['localhost',"localhost:8000", "rwA9.eu-gb.cf.appdomain.cloud"]
-CSRF_TRUSTED_ORIGINS=["https://montassierpa-8000.theiadocker-2-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai"]
+
+ALLOWED_HOSTS = ['localhost',"localhost:8000", "rwA9.eu-gb.cf.appdomain.cloud", "montassierpa-8000.theiadocker-4-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai"]
+CSRF_TRUSTED_ORIGINS=["https://montassierpa-8000.theiadocker-4-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai",'https://rwa9.eu-gb.cf.appdomain.cloud/djangoapp/', 'https://*.127.0.0.1']
 
 
 
